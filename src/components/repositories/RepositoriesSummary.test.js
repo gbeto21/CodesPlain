@@ -12,7 +12,7 @@ test("Displays information about the repository", () => {
 
   for (let key in repository) {
     const value = repository[key];
-    const element = screen.getByText(value);
+    const element = screen.getByText(new RegExp(value));
 
     expect(element).toBeInTheDocument();
   }
