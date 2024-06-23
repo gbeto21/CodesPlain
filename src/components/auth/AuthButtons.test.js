@@ -3,6 +3,14 @@ import { MemoryRouter } from "react-router-dom";
 import { createServer } from "../../test/server";
 import AuthButtons from "./AuthButtons";
 
+function renderComponent() {
+  return render(
+    <MemoryRouter>
+      <AuthButtons />
+    </MemoryRouter>
+  );
+}
+
 describe("when user is not signed in", () => {
   // createServer() ---> '/api/user' ---> {user: null}
   createServer([
@@ -13,22 +21,31 @@ describe("when user is not signed in", () => {
       },
     },
   ]);
-  test("When user is not signed in, sign in and sign up are visible", async () => {});
+  test("sign in and sign up are visible", async () => {
+    renderComponent();
+    await screen.findAllByRole("link");
+  });
 
-  test("When user is not signed in, sign out is not visible", async () => {});
+  test("sign out is not visible", async () => {
+    renderComponent();
+    await screen.findAllByRole("link");
+  });
 });
 
 describe("When user is signed in", () => {
   // createServer() ---> '/api/user' ---> {user: {id:3, email: 'asdf@a.com'}}
-  createServer([
-    {
-      path: "/api/user",
-      res: () => {
-        return { user: { id: 1, email: "asdf@asdf.com" } };
-      },
-    },
-  ]);
-  test("When user is signed in, sign in and sign up are not visible", async () => {});
-
-  test("When user is signed in, sign out are is visible", async () => {});
+  // createServer([
+  //   {
+  //     path: "/api/user",
+  //     res: () => {
+  //       return { user: { id: 1, email: "asdf@asdf.com" } };
+  //     },
+  //   },
+  // ]);
+  // test("sign in and sign up are not visible", async () => {
+  //   renderComponent();
+  // });
+  // test("sign out are is visible", async () => {
+  //   renderComponent();
+  // });
 });
